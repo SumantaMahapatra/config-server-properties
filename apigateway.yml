@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: apigateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: customermsid
+          uri: lb://customerms
+          predicates:
+            - Path=/customer-gateway/**
+          filters:
+            - RewritePath=/customer-gateway/(?<path>.*), /$\{path}
+        - id: inventorymsid
+          uri: lb://inventoryms
+          predicates:
+            - Path=/inventory-gateway/**
+          filters:
+            - RewritePath=/inventory-gateway/(?<path>.*), /$\{path}
+        - id: ordermsid
+          uri: lb://orderms
+          predicates:
+            - Path=/order-gateway/**
+          filters:
+            - RewritePath=/order-gateway/(?<path>.*), /$\{path}
+        - id: paymentmsid
+          uri: lb://paymentms
+          predicates:
+            - Path=/payment-gateway/**
+          filters:
+            - RewritePath=/payment-gateway/(?<path>.*), /$\{path}
+        - id: productmsid
+          uri: lb://productms
+          predicates:
+            - Path=/product-gateway/**
+          filters:
+            - RewritePath=/product-gateway/(?<path>.*), /$\{path}
+      discovery:
+        locator:
+          enabled: true
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
