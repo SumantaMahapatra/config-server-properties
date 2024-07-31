@@ -53,7 +53,17 @@ resilience4j:
         failureRateThreshold: 50
         minimumNumberOfCalls: 4
     instances:
-      ordermsClient:
+      paymentmsClient:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransferFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 20s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+      inventorymsClient:
         registerHealthIndicator: true
         eventConsumerBufferSize: 10
         failureRateThreshold: 50
